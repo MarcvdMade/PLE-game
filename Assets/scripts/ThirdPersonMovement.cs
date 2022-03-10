@@ -10,6 +10,8 @@ public class ThirdPersonMovement : MonoBehaviour
     // Player attributes
     public float speed = 6f;
     public float minHeight = -10f; // Not being used yet
+    public float jumpForce = 10.0f;
+    private float directionY;
 
     // Makes sure the character turns smooth
     public float smoothTurnTime = 0.1f;
@@ -19,12 +21,12 @@ public class ThirdPersonMovement : MonoBehaviour
     public Transform cam;
 
     // Gravity
-    public float gravity = -10f;
+    public float gravity = -5f;
 
     // Ground check
     public Transform groundCheck;
     public LayerMask groundMask;
-    bool isGrounded;
+    public bool isGrounded;
 
     // Velocity
     Vector3 velocity;
@@ -38,9 +40,9 @@ public class ThirdPersonMovement : MonoBehaviour
         // Gravity
         isGrounded = Physics.CheckSphere(groundCheck.position, groundMask);
 
-        if (isGrounded && velocity.y < 0)
+        if (isGrounded)
         {
-            velocity.y = -2f;
+            velocity.y = gravity;
         }
 
 
@@ -48,6 +50,12 @@ public class ThirdPersonMovement : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            Debug.Log("space pressed");
+            directionY = jumpForce;
+        }
 
         if (direction.magnitude >= 0.1f)
         {
@@ -60,8 +68,10 @@ public class ThirdPersonMovement : MonoBehaviour
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
         }
 
-        velocity.y += gravity * Time.deltaTime;
+        directionY += gravity * Time.deltaTime;
+        velocity.y = directionY;
         controller.Move(velocity * Time.deltaTime);
+
 
     }
 }

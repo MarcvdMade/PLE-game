@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -251,7 +251,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663194139}
-  m_LocalRotation: {x: 0.09897817, y: -0.000000008560945, z: 8.515279e-10, w: 0.99508965}
+  m_LocalRotation: {x: 0.09897817, y: 0.000000008560947, z: -8.5152807e-10, w: 0.99508965}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -872,7 +872,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.117014244, y: 0.000000017100044, z: -0.00000000201196, w: 0.99313027}
+  m_LocalRotation: {x: 0.117014244, y: -0.000000017100042, z: 0.000000002011959, w: 0.99313027}
   m_LocalPosition: {x: 0, y: 15, z: -18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -2074,7 +2074,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 450
+    m_MaxSpeed: 600
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -2372,7 +2372,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555252125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.958, z: 0}
+  m_LocalPosition: {x: 0, y: -0.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 425433279}
@@ -3078,7 +3078,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2076992107}
-  m_LocalRotation: {x: 0.11701424, y: 0.00000001708818, z: -0.000000002013392, w: 0.99313027}
+  m_LocalRotation: {x: 0.11701424, y: -0.000000017088176, z: 0.0000000020133915, w: 0.99313027}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3358,6 +3358,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1829547743017585575, guid: 30dbd4877f8869d4fad3f5566c992c27, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1829547743017585575, guid: 30dbd4877f8869d4fad3f5566c992c27, type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 963194228}
@@ -3370,8 +3374,16 @@ PrefabInstance:
       value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 1829547743017585575, guid: 30dbd4877f8869d4fad3f5566c992c27, type: 3}
+      propertyPath: jumpForce
+      value: 24.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 1829547743017585575, guid: 30dbd4877f8869d4fad3f5566c992c27, type: 3}
       propertyPath: minHeight
       value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1829547743017585575, guid: 30dbd4877f8869d4fad3f5566c992c27, type: 3}
+      propertyPath: isGrounded
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1829547743017585575, guid: 30dbd4877f8869d4fad3f5566c992c27, type: 3}
       propertyPath: spawnPoint
