@@ -29,7 +29,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public bool isGrounded;
 
     // Velocity
-    Vector3 velocity;
+    public Vector3 velocity;
 
     // Spawnpoint
     public GameObject spawnPoint;
@@ -37,21 +37,25 @@ public class ThirdPersonMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Gravity
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundMask);
+        isGrounded = controller.isGrounded;
 
-        if (isGrounded)
+        if (controller.isGrounded)
         {
-            velocity.y = gravity;
+            velocity.y = 0;
+            Time.timeScale = 1f;
         }
-
+        else
+        {
+            velocity.y = directionY;
+            Time.timeScale = 0.5f;
+        }
 
         // Player controls & Camera follow
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
         {
             Debug.Log("space pressed");
             directionY = jumpForce;
@@ -69,7 +73,6 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
         directionY += gravity * Time.deltaTime;
-        velocity.y = directionY;
         controller.Move(velocity * Time.deltaTime);
 
 
