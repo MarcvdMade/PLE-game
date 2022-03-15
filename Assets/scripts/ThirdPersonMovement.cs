@@ -11,7 +11,8 @@ public class ThirdPersonMovement : MonoBehaviour
     public float speed = 6f;
     public float minHeight = -10f; // Not being used yet
     public float jumpForce = 10.0f;
-    private float directionY;
+    public float directionX;
+    public float directionY;
 
     // Makes sure the character turns smooth
     public float smoothTurnTime = 0.1f;
@@ -21,7 +22,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public Transform cam;
 
     // Gravity
-    public float gravity = -5f;
+    public float gravity = -98f;
 
     // Ground check
     public Transform groundCheck;
@@ -34,20 +35,36 @@ public class ThirdPersonMovement : MonoBehaviour
     // Spawnpoint
     public GameObject spawnPoint;
 
+    // Aim object
+    public GameObject aimObject;
+
     // Update is called once per frame
     void Update()
     {
         isGrounded = controller.isGrounded;
 
-        if (controller.isGrounded)
+        if (isGrounded)
         {
             velocity.y = 0;
+            velocity.x = 0;
+            directionX = 0;
             Time.timeScale = 1f;
         }
-        else
+        
+        if (!isGrounded)
         {
             velocity.y = directionY;
+            velocity.x = directionX;
             Time.timeScale = 0.5f;
+
+            // Set aim object to mouse pointer
+            Vector3 mousePos = Input.mousePosition;
+            Ray castPoint = Camera.main.ScreenPointToRay(mousePos);
+            RaycastHit hit;
+            if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, groundMask))
+            {
+                aimObject.transform.position = hit.point;
+            }
         }
 
         // Player controls & Camera follow
@@ -59,6 +76,7 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             Debug.Log("space pressed");
             directionY = jumpForce;
+            directionX = 0;
         }
 
         if (direction.magnitude >= 0.1f)
@@ -74,7 +92,5 @@ public class ThirdPersonMovement : MonoBehaviour
 
         directionY += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-
-
     }
 }
