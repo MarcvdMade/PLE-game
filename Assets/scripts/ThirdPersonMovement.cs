@@ -25,9 +25,11 @@ public class ThirdPersonMovement : MonoBehaviour
     public float gravity = -98f;
 
     // Ground check
-    public Transform groundCheck;
     public LayerMask groundMask;
     public bool isGrounded;
+
+    // Object check
+    public LayerMask objectMask;
 
     // Velocity
     public Vector3 velocity;
@@ -37,6 +39,25 @@ public class ThirdPersonMovement : MonoBehaviour
 
     // Aim object
     public GameObject aimObject;
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    Debug.Log(collision.collider.gameObject.layer);
+    //    if (collision.collider.gameObject.layer == 0)
+    //    {
+    //        Debug.Log("touched ground");
+    //        isGrounded = true;
+    //    }
+    //}
+    //
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    Debug.Log("collision exited");
+    //    if (collision.collider.gameObject.layer == 0)
+    //    {
+    //        isGrounded = false;
+    //    }
+    //}
 
     // Update is called once per frame
     void Update()
@@ -49,6 +70,9 @@ public class ThirdPersonMovement : MonoBehaviour
             velocity.x = 0;
             directionX = 0;
             Time.timeScale = 1f;
+
+            // Set aim unactive
+            aimObject.SetActive(false);
         }
         
         if (!isGrounded)
@@ -57,11 +81,19 @@ public class ThirdPersonMovement : MonoBehaviour
             velocity.x = directionX;
             Time.timeScale = 0.5f;
 
+            directionY += gravity * Time.deltaTime;
+
             // Set aim object to mouse pointer
+            aimObject.SetActive(true);
             Vector3 mousePos = Input.mousePosition;
             Ray castPoint = Camera.main.ScreenPointToRay(mousePos);
             RaycastHit hit;
             if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, groundMask))
+            {
+                aimObject.transform.position = hit.point;
+            }
+
+            if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, objectMask))
             {
                 aimObject.transform.position = hit.point;
             }
@@ -72,7 +104,7 @@ public class ThirdPersonMovement : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             Debug.Log("space pressed");
             directionY = jumpForce;
@@ -90,7 +122,11 @@ public class ThirdPersonMovement : MonoBehaviour
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
         }
 
-        directionY += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        if (controller.gameObject.transform.position.y < minHeight)
+        {
+            controller.gameObject.transform.position = spawnPoint.transform.position;
+        }
     }
 }
