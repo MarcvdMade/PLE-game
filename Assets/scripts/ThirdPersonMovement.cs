@@ -8,7 +8,10 @@ public class ThirdPersonMovement : MonoBehaviour
     public CharacterController controller;
 
     // Player attributes
-    public float speed = 6f;
+    public float speed;
+    public float baseSpeed = 10f;
+    public float sprintSpeed = 5f;
+
     public float minHeight = -10f; // Not being used yet
     public float jumpForce = 10.0f;
     public float directionX;
@@ -40,24 +43,14 @@ public class ThirdPersonMovement : MonoBehaviour
     // Aim object
     public GameObject aimObject;
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    Debug.Log(collision.collider.gameObject.layer);
-    //    if (collision.collider.gameObject.layer == 0)
-    //    {
-    //        Debug.Log("touched ground");
-    //        isGrounded = true;
-    //    }
-    //}
-    //
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    Debug.Log("collision exited");
-    //    if (collision.collider.gameObject.layer == 0)
-    //    {
-    //        isGrounded = false;
-    //    }
-    //}
+    // Calculate ray from this empty child
+    public GameObject rayPoint;
+
+    private void Start()
+    {
+        Debug.Log("game started...");
+        speed = baseSpeed;
+    }
 
     // Update is called once per frame
     void Update()
@@ -79,7 +72,7 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             velocity.y = directionY;
             velocity.x = directionX;
-            Time.timeScale = 0.5f;
+            //Time.timeScale = 0.5f;
 
             directionY += gravity * Time.deltaTime;
 
@@ -87,8 +80,7 @@ public class ThirdPersonMovement : MonoBehaviour
             aimObject.SetActive(true);
             Vector3 mousePos = Input.mousePosition;
             Ray castPoint = Camera.main.ScreenPointToRay(mousePos);
-            RaycastHit hit;
-            if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, groundMask))
+            if (Physics.Raycast(castPoint, out RaycastHit hit, Mathf.Infinity, groundMask))
             {
                 aimObject.transform.position = hit.point;
             }
@@ -109,6 +101,14 @@ public class ThirdPersonMovement : MonoBehaviour
             Debug.Log("space pressed");
             directionY = jumpForce;
             directionX = 0;
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = baseSpeed + sprintSpeed;
+        } else
+        {
+            speed = baseSpeed;
         }
 
         if (direction.magnitude >= 0.1f)
