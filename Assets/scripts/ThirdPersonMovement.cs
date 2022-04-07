@@ -5,7 +5,8 @@ using UnityEngine;
 public class ThirdPersonMovement : MonoBehaviour
 {
     // The player controller
-    public CharacterController controller;
+    // public CharacterController controller;
+    public Rigidbody rig;
 
     // Player attributes
     public float speed;
@@ -43,9 +44,6 @@ public class ThirdPersonMovement : MonoBehaviour
     // Aim object
     public GameObject aimObject;
 
-    // Calculate ray from this empty child
-    public GameObject rayPoint;
-
     private void Start()
     {
         Debug.Log("game started...");
@@ -55,7 +53,7 @@ public class ThirdPersonMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isGrounded = controller.isGrounded;
+        // isGrounded = controller.isGrounded;
 
         if (isGrounded)
         {
@@ -119,14 +117,14 @@ public class ThirdPersonMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            rig.AddForce(moveDir.normalized * speed * Time.deltaTime);
         }
 
-        controller.Move(velocity * Time.deltaTime);
+        rig.AddForce(velocity * Time.deltaTime);
 
-        if (controller.gameObject.transform.position.y < minHeight)
+        if (rig.gameObject.transform.position.y < minHeight || Input.GetKey(KeyCode.R))
         {
-            controller.gameObject.transform.position = spawnPoint.transform.position;
+            rig.gameObject.transform.position = spawnPoint.transform.position;
         }
     }
 }
