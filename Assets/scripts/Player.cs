@@ -25,15 +25,26 @@ public class Player : MonoBehaviour
 	[SerializeField, Min(0f)]
 	float probeDistance = 1f;
 
+	// Makes sure the character turns smooth
+	[SerializeField, Range(0f, 1f)]
+	public float smoothTurnTime = 0.1f;
+
+	float turnSmoothVelocity;
+
 	[SerializeField]
 	LayerMask probeMask = -1, stairsMask = -1;
 
 	[SerializeField]
 	Transform cam;
 
+	[SerializeField]
+	Transform spawnPoint;
+
 	Vector3 velocity, desiredVelocity;
 
 	Rigidbody body;
+
+	Animator animator;
 
 	bool desiredJump;
 
@@ -61,13 +72,20 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<Rigidbody>();
+		animator = GetComponent<Animator>();
 		OnValidate();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
 		EvaluateCollision(collision);
-    }
+
+		// Check if water was hit
+		if (collision.gameObject.layer == 4)
+		{
+			body.position = spawnPoint.position;
+		}
+	}
 
     private void OnCollisionStay(Collision collision)
     {
@@ -98,16 +116,25 @@ public class Player : MonoBehaviour
 		playerInput.x = Input.GetAxis("Horizontal");
 		playerInput.y = Input.GetAxis("Vertical");
 		playerInput = Vector2.ClampMagnitude(playerInput, 1f);
+		Vector3 direction = new Vector3(playerInput.x, 0f, playerInput.y).normalized;
 
-		desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+
+		// desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+		desiredVelocity = cam.right * playerInput.x * maxSpeed;
+		desiredVelocity += cam.forward * playerInput.y * maxSpeed;
 
 		desiredJump |= Input.GetButtonDown("Jump");
-		
-		// Player rotation
-		
+
+		if (direction.magnitude >= 0.1f)
+		{
+			float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+			float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, smoothTurnTime);
+
+			transform.rotation = Quaternion.Euler(0f, angle, 0f);
+		}
 	}
 
-    void FixedUpdate()
+	void FixedUpdate()
     {
 		UpdateState();
 		AdjustVelocity();
