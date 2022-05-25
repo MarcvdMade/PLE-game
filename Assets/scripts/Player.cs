@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
 		Vector3 direction = new Vector3(playerInput.x, 0f, playerInput.y).normalized;
 
 
-		// desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+		desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
 		desiredVelocity = cam.right * playerInput.x * maxSpeed;
 		desiredVelocity += cam.forward * playerInput.y * maxSpeed;
 
