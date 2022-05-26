@@ -4,10 +4,10 @@ public class Player : MonoBehaviour
 {
 
 	[SerializeField, Range(0f, 100f)]
-	float maxSpeed = 10f;
+	float maxSpeed, maxSprintSpeed = 10f;
 
 	[SerializeField, Range(0f, 100f)]
-	float maxAcceleration = 10f, maxAirAcceleration = 1f;
+	float maxAcceleration, maxSprintAcceleration = 10f, maxAirAcceleration = 1f;
 
 	[SerializeField, Range(0f, 10f)]
 	float jumpHeight = 2f;
@@ -118,8 +118,9 @@ public class Player : MonoBehaviour
 		playerInput = Vector2.ClampMagnitude(playerInput, 1f);
 		Vector3 direction = new Vector3(playerInput.x, 0f, playerInput.y).normalized;
 
+		// old
+		// desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
 
-		desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
 		desiredVelocity = cam.right * playerInput.x * maxSpeed;
 		desiredVelocity += cam.forward * playerInput.y * maxSpeed;
 
