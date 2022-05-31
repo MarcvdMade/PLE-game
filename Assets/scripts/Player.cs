@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
 
 	[SerializeField, Range(0f, 100f)]
-	float maxSpeed, maxSprintSpeed = 10f;
+	float maxSpeed = 10f;
 
 	[SerializeField, Range(0f, 100f)]
-	float maxAcceleration, maxSprintAcceleration = 10f, maxAirAcceleration = 1f;
+	float maxAcceleration = 10f, maxAirAcceleration = 1f;
 
 	[SerializeField, Range(0f, 10f)]
 	float jumpHeight = 2f;
@@ -39,6 +40,9 @@ public class Player : MonoBehaviour
 
 	[SerializeField]
 	Transform spawnPoint;
+
+	[SerializeField]
+	public string nextLevelName;
 
 	Vector3 velocity, desiredVelocity;
 
@@ -85,6 +89,13 @@ public class Player : MonoBehaviour
 		{
 			body.position = spawnPoint.position;
 		}
+
+		// Check if portal was hit
+		if (collision.gameObject.CompareTag("Portal"))
+        {
+			SceneManager.LoadScene(nextLevelName);
+			Debug.Log("touched portal");
+        }
 	}
 
     private void OnCollisionStay(Collision collision)
