@@ -167,7 +167,7 @@ public class PlayerGravity : MonoBehaviour
 		}
 
 		// customWorldUp.rotation = Quaternion.LookRotation(transform.forward, contactNormal);
-		transform.rotation = Quaternion.LookRotation(transform.forward, contactNormal);
+		// transform.rotation = Quaternion.LookRotation(transform.forward, contactNormal);
 	}
 
 	void FixedUpdate()
