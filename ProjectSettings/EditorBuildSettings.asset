@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/First World.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Into The Dungeon.unity
-    guid: 178953982247632418d57b2747ec3e50
+    path: Assets/Scenes/Second World.unity
+    guid: 59f13d5e2c4819948af1eb1feed6076d
   m_configObjects: {}
