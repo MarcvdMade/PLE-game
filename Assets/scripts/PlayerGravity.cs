@@ -167,12 +167,12 @@ public class PlayerGravity : MonoBehaviour
 		}
 
 		// customWorldUp.rotation = Quaternion.LookRotation(transform.forward, contactNormal);
-		transform.rotation = Quaternion.LookRotation(cam.transform.forward, contactNormal);
+		// transform.rotation = Quaternion.LookRotation(cam.transform.forward, contactNormal);
 	}
 
 	void FixedUpdate()
 	{
-		// upAxis = -Physics.gravity.normalized;
+		upAxis = -Physics.gravity.normalized;
 		Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
 
 		UpdateState();
@@ -247,7 +247,7 @@ public class PlayerGravity : MonoBehaviour
 
 		stepsSinceLastJump = 0;
 		jumpPhase += 1;
-		float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
+		float jumpSpeed = Mathf.Sqrt(2f * Physics.gravity.magnitude * jumpHeight);
 		jumpDirection = (jumpDirection + upAxis).normalized;
 		float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
 		if (alignedSpeed > 0f)
