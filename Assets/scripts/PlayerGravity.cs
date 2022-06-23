@@ -89,7 +89,7 @@ public class PlayerGravity : MonoBehaviour
 		OnValidate();
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	void OnCollisionEnter(Collision collision)
 	{
 		EvaluateCollision(collision);
 
@@ -138,10 +138,7 @@ public class PlayerGravity : MonoBehaviour
 		playerInput.x = Input.GetAxis("Horizontal");
 		playerInput.y = Input.GetAxis("Vertical");
 		playerInput = Vector2.ClampMagnitude(playerInput, 1f);
-		Vector3 direction = new Vector3(playerInput.x, 0f, playerInput.y).normalized;
-
-		// old
-		// desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+		// Vector3 direction = new Vector3(playerInput.x, 0f, playerInput.y).normalized;
 
 		if (playerInputSpace)
         {
@@ -152,22 +149,25 @@ public class PlayerGravity : MonoBehaviour
 			rightAxis = ProjectDirectionOnPlane(Vector3.right, upAxis);
 			forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
         }
-		desiredVelocity = cam.right * playerInput.x * maxSpeed;
-		desiredVelocity += cam.forward * playerInput.y * maxSpeed;			
+		// old
+		desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+
+		//desiredVelocity = playerInputSpace.right * playerInput.x * maxSpeed;
+		//desiredVelocity += playerInputSpace.forward * playerInput.y * maxSpeed;			
 
 
 		desiredJump |= Input.GetButtonDown("Jump");
 
-		if (direction.magnitude >= 0.1f)
-		{
-			float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-			float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, smoothTurnTime);
-
-			transform.rotation = Quaternion.Euler(0f, angle, 0f);
-		}
+		// if (direction.magnitude >= 0.1f)
+		// {
+		// 	float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+		// 	float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, smoothTurnTime);
+		// 
+		// 	transform.rotation = Quaternion.Euler(0f, angle, 0f);
+		// }
 
 		// customWorldUp.rotation = Quaternion.LookRotation(transform.forward, contactNormal);
-		// transform.rotation = Quaternion.LookRotation(cam.transform.forward, contactNormal);
+		transform.rotation = Quaternion.LookRotation(playerInputSpace.transform.forward, contactNormal);
 	}
 
 	void FixedUpdate()
