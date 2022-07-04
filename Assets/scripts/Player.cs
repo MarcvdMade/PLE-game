@@ -144,6 +144,15 @@ public class Player : MonoBehaviour
 
 			transform.rotation = Quaternion.Euler(0f, angle, 0f);
 		}
+
+		if (Input.GetKeyDown(KeyCode.Alpha1))
+		{
+			SceneManager.LoadScene(0);
+		}
+
+		if (Input.GetKeyDown(KeyCode.Alpha2)) {
+			SceneManager.LoadScene(1);
+        }
 	}
 
 	void FixedUpdate()

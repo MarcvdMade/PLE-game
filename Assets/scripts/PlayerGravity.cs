@@ -168,6 +168,16 @@ public class PlayerGravity : MonoBehaviour
 
 		// customWorldUp.rotation = Quaternion.LookRotation(transform.forward, contactNormal);
 		transform.rotation = Quaternion.LookRotation(playerInputSpace.transform.forward, upAxis);
+
+		if (Input.GetKeyDown(KeyCode.Alpha1))
+		{
+			SceneManager.LoadScene(0);
+		}
+
+		if (Input.GetKeyDown(KeyCode.Alpha2))
+		{
+			SceneManager.LoadScene(1);
+		}
 	}
 
 	void FixedUpdate()
